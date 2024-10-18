@@ -1,11 +1,14 @@
 version: 2
+registries:
+  github-actonomy:
+    type: git
+    url: https://github.com
+    username: x-access-token
+    password: ${{secrets.DEPNDA_GITHUB_PERSONAL_TOKEN}}
 updates:
-- package-ecosystem: github-actions
-  directory: "/"
-  target-branch: develop
-  schedule:
-    interval: daily
-    timezone: America/Chicago
-  open-pull-requests-limit: 10
-  assignees:
-  - zteater
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    registries:
+      - github-actonomy
