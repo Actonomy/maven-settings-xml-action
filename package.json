@@ -16,7 +16,7 @@
     "@xmldom/xmldom": "^0.8.10"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.20.5",
+    "@vercel/ncc": "^0.38.4",
     "eslint": "^7.3.0",
     "eslint-plugin-mocha": "^10.2.0",
     "mocha": "^10.2.0",
@@ -30,7 +30,7 @@
     "build": "npm run build_index && npm run copy_templates"
   },
   "engines": {
-    "node": "16.x"
+    "node": "24.x"
   },
   "repository": {
     "type": "git",
