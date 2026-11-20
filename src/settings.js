@@ -95,11 +95,7 @@ function updateServers(templateXml) {
             var keyXml = templateXml.createElement(key);
 
             // convert all json content as xml
-            var value = objectToXml(serverInput[key]);
-            var xmlValue = new DOMParser().parseFromString(value, 'text/xml');
-
-            // append new xml to current node
-            keyXml.appendChild(xmlValue);
+            appendXml(templateXml, keyXml, objectToXml(serverInput[key]));
             serverXml.appendChild(keyXml);
         }
         serversXml.appendChild(serverXml);
@@ -281,16 +277,23 @@ function updateProxies(templateXml) {
             var keyXml = templateXml.createElement(key);
 
             // convert all json content as xml
-            var value = objectToXml(proxyInput[key]);
-            var xmlValue = new DOMParser().parseFromString(value, 'text/xml');
-
-            // append new xml to current node
-            keyXml.appendChild(xmlValue);
+            appendXml(templateXml, keyXml, objectToXml(proxyInput[key]));
             proxyXml.appendChild(keyXml);
         }
         proxiesXml.appendChild(proxyXml);
     });
 
+}
+
+// Appends the nodes of an XML fragment to parent. The fragment is parsed inside a wrapper
+// element because it may hold several sibling elements (a list such as repositoryOrigins):
+// parsed as a document, everything after the first root element would come out as escaped text.
+function appendXml(doc, parent, fragment) {
+    var wrapper = new DOMParser().parseFromString('<fragment>' + fragment + '</fragment>', 'text/xml').documentElement;
+    while (wrapper.firstChild) {
+        parent.appendChild(doc.importNode(wrapper.firstChild, true));
+        wrapper.removeChild(wrapper.firstChild);
+    }
 }
 
 function objectToXml(obj) {

@@ -104,5 +104,24 @@ describe('validate servers', function () {
         });
     });
 
-});
+    describe('when a list property input', function () {
+        it('<server/> should be appended with every element of the list', function () {
+            // given input
+            process.env['INPUT_SERVERS'] = '[{ "id": "foo", "username": "fu", "password": "bar", "repositoryOrigins": { "repositoryOrigin": ["https://maven.example.com", "https://legacy.example.com"] }, "configuration": { "httpConfiguration": { "all" : { "usePreemptive": "true" }}}}]';
 
+            // when
+            var actualXml = settings.getSettingsTemplate();
+            settings.update(actualXml);
+            var actual = settings.formatSettings(actualXml);
+
+            // then
+            var expectedXml = settings.getTemplate('../test/js/resources/', 'when-servers-with-repository-origins.xml');
+            expected = settings.formatSettings(expectedXml);
+            assert.equal(actual, expected);
+
+            // tear down
+            process.env['INPUT_SERVERS'] = '';
+        });
+    });
+
+});
